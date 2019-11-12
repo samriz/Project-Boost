@@ -7,18 +7,21 @@ public class Rocket : MonoBehaviour
     Rigidbody rigidBody;
     AudioSource rocketSound;
     // Start is called before the first frame update
-    void Start(){
+    void Start()
+    {
         rigidBody = GetComponent<Rigidbody>();
         rocketSound = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
-    void Update(){
+    void Update()
+    {
         Thrust();
         Rotate();
     }
 
-    void Thrust(){
+    void Thrust()
+    {
         if(Input.GetKey(KeyCode.Space)) //can thrust while rotating
         {
             rigidBody.AddRelativeForce(Vector3.up);
@@ -27,15 +30,18 @@ public class Rocket : MonoBehaviour
         else rocketSound.Stop(); //when we aren't holding down the space key then stop the sound
     }
 
-    void Rotate(){
+    void Rotate()
+    {
         rigidBody.freezeRotation = true; //take manual control of rotation
+        float rcsThrust = 100f;
+        float rotationThisFrame = rcsThrust * Time.deltaTime;
         if(Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(Vector3.forward); //go left
+            transform.Rotate(Vector3.forward * rotationThisFrame); //go left
         }
         else if(Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(-Vector3.forward); //go right
+            transform.Rotate(-Vector3.forward * rotationThisFrame); //go right
         }
         rigidBody.freezeRotation = false; //resume physics control of rotation
     }
